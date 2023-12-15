@@ -178,41 +178,58 @@ void updateitem() {
     int num_line,total_line=0,sel;
 	char ch,choice='Y';
 	FILE *fp= fopen("inventory.txt", "r");
-	while((ch=getc(fp))!=EOF){
-		if(ch=='\n'){
-			total_line++;
-		}
+	while((ch=getc(fp))!=EOF)
+    {
+		if(ch=='\n')
+		total_line++;
 	}
 	struct item *p = (struct item *)malloc(total_line*sizeof(struct item));
 	rewind(fp);
-	for(int i = 0; i < total_line; i++){
-        fscanf(fp, "%d %s %s %f %d %s %s", &(p + i)->item_no, (p + i)->item_name, (p + i)->description, &(p + i)->price, &(p + i)->quant_instock, (p + i)->expdate, (p + i)->category);
-    }
+	for(int i = 0; i < total_line; i++)
+    fscanf(fp, "%d %s %s %f %d %s %s", &(p + i)->item_no, (p + i)->item_name, (p + i)->description, &(p + i)->price, &(p + i)->quant_instock, (p + i)->expdate, (p + i)->category);
+
     fclose(fp);
-    printf("Enter the code of item\n");
+    printf("Enter the item no.\n");
     scanf("%d", &num_line);
     while(choice=='Y'|| choice=='y')
     {
-    	printf("enter new Item  Name\n");
-		scanf("%s",(p + num_line - 1)->item_name);
-	    printf("enter new Description\n");
-		scanf("%s",(p + num_line - 1)->description);
-	    printf("enter new Price\n");
-	    scanf("%f",&(p + num_line - 1)->price);
-	    printf("enter new Quantity in stock\n");
-	    scanf("%d",&(p + num_line - 1)->quant_instock);
-	    printf("enter new Expiry Date\n");
-	    scanf("%s",(p + num_line - 1)->expdate);
-	    printf("enter new category\n");
-	    scanf("%s",(p + num_line - 1)->category);
+		printf("for changes\n Enter 1 for item_name\n Enter 2 for description\n Enter 3 for price\n Enter 4 for quant_instock\n Enter 5 for expdate \n Enter 6 for category\n");
+		scanf("%d",&sel);
+		switch (sel) {
+		        case 1:
+		            printf("enter new Item  Name\n");
+		            scanf("%s",(p + num_line - 1)->item_name);
+		            break;
+		        case 2:
+		            printf("enter new Description\n");
+		            scanf("%s",(p + num_line - 1)->description);
+		            break;
+		        case 3:
+		            printf("enter new Price\n");
+		            scanf("%f",&(p + num_line - 1)->price);
+		            break;
+		        case 4:
+		            printf("enter new Quantity in stock\n");
+		            scanf("%d",&(p + num_line - 1)->quant_instock);
+		            break;
+		        case 5:
+		            printf("enter new Expiry Date\n");
+		            scanf("%s",(p + num_line - 1)->expdate);
+		            break;
+		        case 6:
+		            printf("enter new category\n");
+		            scanf("%s",(p + num_line - 1)->category);
+		            break;
+		        default:
+		            printf("Enter Correct Number . Please try again.\n");
+    	}
     	printf("Continue? 'Y'/'N'");
     	scanf(" %c",&choice);
     }
     fp = fopen("inventory.txt", "w");
     for(int i = 0; i < total_line; i++)
-    {
-        fprintf(fp, "%-3d %-15s %8s %-12f %-5d %-10s %-10s\n", (p + i)->item_no, (p + i)->item_name, (p + i)->description, (p + i)->price, (p + i)->quant_instock, (p + i)->expdate, (p + i)->category);
-    }
+    fprintf(fp, "%-3d %-15s %8s %-12f %-5d %-10s %-10s\n", (p + i)->item_no, (p + i)->item_name, (p + i)->description, (p + i)->price, (p + i)->quant_instock, (p + i)->expdate, (p + i)->category);
+
     printf("\nUdpate Successfully\n");
     fclose(fp);
     free(p);
